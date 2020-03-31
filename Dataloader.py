@@ -16,9 +16,9 @@ class DataLoader():
         events.append(event)
     
     def load_data(self):
-        config_file = json.load(open('configuration.json'))
-        dataset = config_file['dataset']['list']
-        ground_file = 'GroundTruth/' + dataset + '.txt'
+        # config_file = json.load(open('configuration.json'))
+        # dataset = config_file['dataset']['list']
+        ground_file = 'GroundTruth/bgpclear_first.txt'
         events = []
         clears = []
 
@@ -33,9 +33,9 @@ class DataLoader():
             }
             self.addEvent(events, eventRecord)
 
-        print(events[0]['node'])
-        self.buildClear('leaf1', events, clears)
-
+        # print(events[0]['node'])
+        self.buildClear('spine1', events, clears)
+        print(clears)
         starttime = []
         endtime = []
         for data in clears:
@@ -44,7 +44,7 @@ class DataLoader():
 
         # Load csv files
         print("loading csv files....")
-        df_csv = pd.read_csv('Data/DatasetByNodes/leaf1bgpclear_apptraffic_2hourRun.csv',
+        df_csv = pd.read_csv('Data/DatasetByNodes/spine1bgpclear_first.csv',
             low_memory=False).dropna().drop('Unnamed: 0', axis=1)
         print("done!")
 
@@ -60,7 +60,12 @@ class DataLoader():
     
     def get_dataset(self):
         return self.data
+    
+    def count_positive(self):
+        count1 = self.data[self.data["result"] == True].count()
+        print(count1)
 
 if __name__ == "__main__":
     dataloader = DataLoader()
-    print(dataloader.get_dataset())
+    # print(dataloader.get_dataset())
+    # dataloader.count_positive()
